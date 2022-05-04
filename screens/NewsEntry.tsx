@@ -63,9 +63,10 @@ export default function NewsEntry({ newsID, getRead, storeRead }: Props) {
     return strDomain;
   };
 
-  const _handlePressButtonAsync = async (url: string) => {
+  const openWebBrowser = async (url: string) => {
     storeRead(newsID);
     setRead(true);
+    if (url == "") return;
     await WebBrowser.openBrowserAsync(url, {
       controlsColor: Colors[colorScheme].tint,
       dismissButtonStyle: "done",
@@ -80,12 +81,12 @@ export default function NewsEntry({ newsID, getRead, storeRead }: Props) {
       style={styles.container}
       underlayColor={Colors[colorScheme].tint}
       onPress={() => {
-        _handlePressButtonAsync(data?.url ?? "");
+          openWebBrowser(data?.url ?? "");
       }}
     >
       <>
         {isLoading && <Text>Loading...</Text>}
-        {isError && <Text>Error: {error}</Text>}
+        {isError && <Text>{`Error: ${error}`}</Text>}
         {!isLoading && !isError && (
           <>
             <Text

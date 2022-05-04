@@ -58,7 +58,7 @@ export default function TabOneScreen({ route }: RootTabScreenProps<"TabOne">) {
   return (
     <View style={styles.container}>
       {isLoading && <Text>Loading...</Text>}
-      {isError && <Text>Error: {error}</Text>}
+      {isError && <Text>{`Error: ${error}`}</Text>}
       {!(isLoading || isRefetching) && !isError && (
         <FlatList
           keyExtractor={(item) => item.toString()}
@@ -66,7 +66,6 @@ export default function TabOneScreen({ route }: RootTabScreenProps<"TabOne">) {
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
-          horizontal={false}
           data={data}
           renderItem={renderItem}
         />
