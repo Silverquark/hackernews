@@ -1,6 +1,11 @@
 import axios from "axios";
 import * as React from "react";
-import { FlatList, StyleSheet, RefreshControl } from "react-native";
+import {
+  FlatList,
+  StyleSheet,
+  RefreshControl,
+  VirtualizedList,
+} from "react-native";
 import { useQuery } from "react-query";
 import { useScrollToTop } from "@react-navigation/native";
 
@@ -51,8 +56,13 @@ export default function TabOneScreen({ route }: RootTabScreenProps<"TabOne">) {
     setRefreshing(false);
   }, []);
 
-  const renderItem = ({ item, index }: { item: number, index: number }) => (
-    <NewsEntry newsID={item} getRead={getRead} storeRead={addReadPosts} even={Boolean(index % 2)} />
+  const renderItem = ({ item, index }: { item: number; index: number }) => (
+    <NewsEntry
+      newsID={item}
+      getRead={getRead}
+      storeRead={addReadPosts}
+      even={Boolean(index % 2)}
+    />
   );
 
   return (
@@ -60,14 +70,17 @@ export default function TabOneScreen({ route }: RootTabScreenProps<"TabOne">) {
       {isLoading && <Text>Loading...</Text>}
       {isError && <Text>{`Error: ${error}`}</Text>}
       {!(isLoading || isRefetching) && !isError && (
-        <FlatList
-          keyExtractor={(item) => item.toString()}
+        <VirtualizedList
+          keyExtractor={(item: number) => item.toString()}
           ref={ref}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
           data={data}
           renderItem={renderItem}
+          getItemCount={() => data?.length ?? 0}
+          getItem={(data, index) => data[index]}
+          initialNumToRender={10}
         />
       )}
     </View>

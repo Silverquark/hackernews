@@ -10,6 +10,7 @@ import Colors from "../constants/Colors";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 interface Props {
   newsID: number;
@@ -30,24 +31,25 @@ interface News {
   url: string;
 }
 
+async function getNews(newsID: number) {
+  try {
+    const response = await axios.get<News>(
+      `https://hacker-news.firebaseio.com/v0/item/${newsID}.json`
+    );
+    if (response.status !== 200) {
+      throw new Error("Problem fetching data");
+    }
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export default function NewsEntry({ newsID, getRead, storeRead, even }: Props) {
   const colorScheme = useColorScheme();
   const [read, setRead] = useState(false);
 
-  async function getNews(newsID: number) {
-    try {
-      const response = await axios.get<News>(
-        `https://hacker-news.firebaseio.com/v0/item/${newsID}.json`
-      );
-      if (response.status !== 200) {
-        throw new Error("Problem fetching data");
-      }
-      return response.data;
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
+  const navigation = useNavigation();
   useEffect(() => {
     setRead(getRead(newsID));
   }, []);
@@ -56,14 +58,6 @@ export default function NewsEntry({ newsID, getRead, storeRead, even }: Props) {
     ["news", newsID],
     () => getNews(newsID)
   );
-
-  const getUrlName = (url: string | undefined): string => {
-    if (url == undefined) return "";
-    let domain = new URL(url);
-    let strDomain = domain.host;
-    strDomain = strDomain.replace("www.", "");
-    return strDomain;
-  };
 
   const openWebBrowser = async (url: string) => {
     storeRead(newsID);
@@ -83,7 +77,9 @@ export default function NewsEntry({ newsID, getRead, storeRead, even }: Props) {
       style={{
         width: "100%",
         flexDirection: "row",
-        backgroundColor: even ? Colors[colorScheme].background : Colors[colorScheme].backgroundLight,
+        backgroundColor: even
+          ? Colors[colorScheme].background
+          : Colors[colorScheme].backgroundLight,
       }}
     >
       <TouchableHighlight
@@ -122,7 +118,9 @@ export default function NewsEntry({ newsID, getRead, storeRead, even }: Props) {
       <TouchableHighlight
         underlayColor={Colors[colorScheme].tint}
         onPress={() => {
-          openWebBrowser(data?.url ?? "");
+          navigation.navigate("Comments", {
+            commentIDs: data?.kids ?? [],
+          });
         }}
         style={{
           justifyContent: "center",
@@ -130,12 +128,20 @@ export default function NewsEntry({ newsID, getRead, storeRead, even }: Props) {
           paddingRight: 16,
         }}
       >
-        <MaterialIcons
-          name="comment"
-          size={28}
-          color={Colors[colorScheme].tabIconDefault}
-          style={{}}
-        />
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+          }}
+        >
+          <MaterialIcons
+            name="comment"
+            size={28}
+            color={Colors[colorScheme].tabIconDefault}
+          />
+          <Text>{data?.descendants}</Text>
+        </View>
       </TouchableHighlight>
     </View>
   );

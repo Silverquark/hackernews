@@ -12,16 +12,28 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
-import { ColorSchemeName, Pressable } from "react-native";
+import { ColorSchemeName } from "react-native";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
+import CommentScreen from "../screens/CommentScreen";
 import TabOneScreen from "../screens/NewsTabScreen";
-import {
-  RootStackParamList,
-  RootTabParamList,
-  RootTabScreenProps,
-} from "../types";
+import { RootStackParamList, RootTabParamList } from "../types";
+
+const MyTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: "#ff6600",
+  },
+};
+const MyDarkTheme = {
+  ...DarkTheme,
+  colors: {
+    ...DarkTheme.colors,
+    primary: "#ff6600",
+  },
+};
 
 export default function Navigation({
   colorScheme,
@@ -29,9 +41,7 @@ export default function Navigation({
   colorScheme: ColorSchemeName;
 }) {
   return (
-    <NavigationContainer
-      theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-    >
+    <NavigationContainer theme={colorScheme === "dark" ? MyDarkTheme : MyTheme}>
       <RootNavigator />
     </NavigationContainer>
   );
@@ -51,6 +61,8 @@ function RootNavigator() {
         component={BottomTabNavigator}
         options={{ headerShown: false }}
       />
+
+      <Stack.Screen name="Comments" component={CommentScreen} options={{}} />
     </Stack.Navigator>
   );
 }

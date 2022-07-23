@@ -18,10 +18,20 @@ declare global {
 
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
+  Comments: CommentsType | undefined;
+};
+
+export type CommentsType = {
+  commentIDs: number[];
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
   NativeStackScreenProps<RootStackParamList, Screen>;
+
+export type CommentsScreenProps = NativeStackScreenProps<
+  RootStackParamList,
+  "Comments"
+>;
 
 export type RootTabParamList = {
   TabOne: { type: ScreenType; url: string };
