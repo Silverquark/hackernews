@@ -51,8 +51,8 @@ export default function TabOneScreen({ route }: RootTabScreenProps<"TabOne">) {
     setRefreshing(false);
   }, []);
 
-  const renderItem = ({ item }: { item: number }) => (
-    <NewsEntry newsID={item} getRead={getRead} storeRead={addReadPosts} />
+  const renderItem = ({ item, index }: { item: number, index: number }) => (
+    <NewsEntry newsID={item} getRead={getRead} storeRead={addReadPosts} even={Boolean(index % 2)} />
   );
 
   return (
@@ -77,7 +77,6 @@ export default function TabOneScreen({ route }: RootTabScreenProps<"TabOne">) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
     justifyContent: "center",
   },
   title: {
