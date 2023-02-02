@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  TouchableHighlight,
   View,
   StyleSheet,
   Text,
@@ -8,15 +7,10 @@ import {
 } from "react-native";
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
-import * as WebBrowser from "expo-web-browser";
 import axios from "axios";
 import { useQuery } from "react-query";
 
-import { WebView } from "react-native-webview";
-import { decode } from "html-entities";
-
 import RenderHtml from "react-native-render-html";
-import { FlatList } from "react-native-gesture-handler";
 
 interface CommentProps {
   commentID: number;

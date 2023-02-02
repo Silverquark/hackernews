@@ -67,6 +67,7 @@ export default function NewsEntry({ newsID, getRead, storeRead, even }: Props) {
       controlsColor: Colors[colorScheme].tint,
       dismissButtonStyle: "done",
       toolbarColor: Colors[colorScheme].background,
+      presentationStyle: WebBrowser.WebBrowserPresentationStyle.POPOVER
     });
   };
 

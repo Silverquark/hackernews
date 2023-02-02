@@ -1,16 +1,11 @@
 import React from "react";
 import {
   StyleSheet,
-  TouchableOpacity,
-  View,
-  Text,
   VirtualizedList,
 } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Comment from "../components/Comment";
 
-import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import { CommentsScreenProps } from "../types";
 
