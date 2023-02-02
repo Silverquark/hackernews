@@ -67,7 +67,7 @@ export default function TabOneScreen({ route }: RootTabScreenProps<"TabOne">) {
 
   return (
     <View style={styles.container}>
-      {isLoading && <Text>Loading...</Text>}
+      {isLoading && <Text style={{ width: '100%', textAlign: 'center'}}>Loading...</Text>}
       {isError && <Text>{`Error: ${error}`}</Text>}
       {!(isLoading || isRefetching) && !isError && (
         <VirtualizedList
@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+    alignItems: 'stretch',
   },
   title: {
     fontSize: 20,
